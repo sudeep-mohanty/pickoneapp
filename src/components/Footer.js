@@ -12,7 +12,7 @@ export default function Footer() {
       gap: 8,
     }}>
       <a
-        href="https://ko-fi.com/pickoneapp"
+        href="https://ko-fi.com/sudeepmohanty"
         target="_blank"
         rel="noopener noreferrer"
         style={{
