@@ -85,7 +85,7 @@ export default function HomePage() {
                 marginBottom: 6, display: "block",
                 textTransform: "uppercase", letterSpacing: 2,
               }}>
-                ☝️ Index finger
+                <span style={{ fontSize: 22, verticalAlign: "middle" }}>☝️</span> Index finger
               </label>
               <input
                 value={opt1}
@@ -106,7 +106,7 @@ export default function HomePage() {
                 marginBottom: 6, display: "block",
                 textTransform: "uppercase", letterSpacing: 2,
               }}>
-                🖕 Ring finger
+                <span style={{ fontSize: 22, verticalAlign: "middle" }}>🖕</span> Ring finger
               </label>
               <input
                 id="opt2-input"

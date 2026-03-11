@@ -12,8 +12,8 @@ export default function Hand({
   const [hovered, setHovered] = useState(null);
 
   const fingerGlow = (side) => {
-    if (revealedSide === side) return "drop-shadow(0 0 20px #FFD700)";
-    if (hovered === side) return "drop-shadow(0 0 12px #FF5733)";
+    if (revealedSide === side) return "drop-shadow(0 0 24px #FFD700)";
+    if (hovered === side) return "drop-shadow(0 0 16px #FF5733)";
     return "none";
   };
 
@@ -24,21 +24,53 @@ export default function Hand({
   };
 
   return (
-    <div style={{ position: "relative", width: 280, height: 340, margin: "0 auto" }}>
-      <svg viewBox="0 0 280 340" width="280" height="340" xmlns="http://www.w3.org/2000/svg">
-        {/* Palm */}
-        <ellipse cx="140" cy="230" rx="75" ry="85" fill="#F5D0A9" stroke="#D4A574" strokeWidth="2" />
+    <div style={{ position: "relative", width: 260, height: 340, margin: "0 auto" }}>
+      <svg viewBox="0 0 260 360" width="260" height="360" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          {/* Skin gradient for depth */}
+          <linearGradient id="skinGrad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stopColor="#FDCFAB" />
+            <stop offset="50%" stopColor="#F5BF94" />
+            <stop offset="100%" stopColor="#E8A878" />
+          </linearGradient>
+          <linearGradient id="fingerGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#FDCFAB" />
+            <stop offset="100%" stopColor="#F0B888" />
+          </linearGradient>
+          <radialGradient id="palmShadow" cx="0.5" cy="0.4" r="0.6">
+            <stop offset="0%" stopColor="#F5BF94" />
+            <stop offset="100%" stopColor="#D4976B" />
+          </radialGradient>
+          <linearGradient id="nailGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#FFE8E0" />
+            <stop offset="100%" stopColor="#F5D0C0" />
+          </linearGradient>
+        </defs>
 
-        {/* Folded thumb */}
-        <ellipse cx="78" cy="195" rx="20" ry="16" fill="#F5D0A9" stroke="#D4A574" strokeWidth="1.5"
-          transform="rotate(-20 78 195)" />
+        {/* Wrist */}
+        <path d="M95,310 Q95,295 105,290 L155,290 Q165,295 165,310 L165,350 Q165,358 155,358 L105,358 Q95,358 95,350 Z"
+          fill="url(#skinGrad)" stroke="#D4976B" strokeWidth="1.5" />
+        {/* Wrist line */}
+        <path d="M105,295 Q130,300 155,295" fill="none" stroke="#D4976B" strokeWidth="1" opacity="0.5" />
 
-        {/* Folded middle finger */}
-        <rect x="122" y="148" width="36" height="30" rx="18" fill="#E8C49A" stroke="#D4A574" strokeWidth="1.5" />
+        {/* Palm - organic shape */}
+        <path d="M72,200 Q65,180 75,155 Q80,145 95,145 L165,145 Q180,145 185,155 Q195,180 188,200 Q192,230 185,260 Q180,280 170,290 L90,290 Q80,280 75,260 Q68,230 72,200 Z"
+          fill="url(#palmShadow)" stroke="#D4976B" strokeWidth="1.5" />
 
-        {/* Folded pinky */}
-        <rect x="175" y="170" width="28" height="26" rx="14" fill="#E8C49A" stroke="#D4A574" strokeWidth="1.5"
-          transform="rotate(15 189 183)" />
+        {/* Palm crease lines */}
+        <path d="M95,195 Q120,185 155,200" fill="none" stroke="#C4875B" strokeWidth="1" opacity="0.4" />
+        <path d="M90,220 Q115,210 160,218" fill="none" stroke="#C4875B" strokeWidth="1" opacity="0.3" />
+
+        {/* Thumb - curled naturally */}
+        <path d="M72,195 Q55,190 48,175 Q42,160 50,152 Q58,144 68,150 Q75,155 78,168 Z"
+          fill="url(#fingerGrad)" stroke="#D4976B" strokeWidth="1.5" />
+
+        {/* Middle finger - folded over palm */}
+        <ellipse cx="130" cy="148" rx="16" ry="12" fill="#F0B888" stroke="#D4976B" strokeWidth="1" />
+
+        {/* Pinky - folded */}
+        <ellipse cx="172" cy="162" rx="14" ry="11" fill="#F0B888" stroke="#D4976B" strokeWidth="1"
+          transform="rotate(15 172 162)" />
 
         {/* Index finger (LEFT option) */}
         <g
@@ -55,12 +87,19 @@ export default function Hand({
           onMouseEnter={() => interactive && setHovered("left")}
           onMouseLeave={() => setHovered(null)}
         >
-          <rect x="82" y="40" width="38" height="120" rx="19" fill="#F5D0A9" stroke="#D4A574" strokeWidth="2" />
-          <ellipse cx="101" cy="42" rx="17" ry="6" fill="#F0C89A" />
-          <rect x="88" y="36" width="26" height="14" rx="10" fill="#FCEADE" stroke="#E8C49A" strokeWidth="1" />
+          {/* Finger body - tapered shape */}
+          <path d="M85,145 Q83,140 84,50 Q84,30 100,30 Q116,30 116,50 Q117,140 115,145 Z"
+            fill="url(#fingerGrad)" stroke="#D4976B" strokeWidth="1.5" />
+          {/* Knuckle lines */}
+          <path d="M88,105 Q100,102 112,105" fill="none" stroke="#D4976B" strokeWidth="0.8" opacity="0.4" />
+          <path d="M87,85 Q100,82 113,85" fill="none" stroke="#D4976B" strokeWidth="0.8" opacity="0.3" />
+          {/* Fingernail */}
+          <path d="M90,38 Q90,28 100,28 Q110,28 110,38 Q110,45 100,46 Q90,45 90,38 Z"
+            fill="url(#nailGrad)" stroke="#E0B8A8" strokeWidth="1" />
+          {/* Question mark */}
           {interactive && (
-            <text x="101" y="105" textAnchor="middle" fill="#FF5733" fontWeight="900"
-              fontSize="20" fontFamily="monospace">?</text>
+            <text x="100" y="78" textAnchor="middle" fill="#FF5733" fontWeight="900"
+              fontSize="22" fontFamily="'Space Mono', monospace">?</text>
           )}
         </g>
 
@@ -79,26 +118,33 @@ export default function Hand({
           onMouseEnter={() => interactive && setHovered("right")}
           onMouseLeave={() => setHovered(null)}
         >
-          <rect x="160" y="50" width="38" height="110" rx="19" fill="#F5D0A9" stroke="#D4A574" strokeWidth="2"
-            transform="rotate(8 179 105)" />
-          <ellipse cx="180" cy="50" rx="17" ry="6" fill="#F0C89A" transform="rotate(8 180 50)" />
-          <rect x="167" y="45" width="26" height="14" rx="10" fill="#FCEADE" stroke="#E8C49A" strokeWidth="1"
-            transform="rotate(8 180 52)" />
+          {/* Finger body - slightly angled, tapered */}
+          <path d="M148,150 Q145,142 150,60 Q151,38 165,38 Q179,38 180,60 Q182,142 180,150 Z"
+            fill="url(#fingerGrad)" stroke="#D4976B" strokeWidth="1.5"
+            transform="rotate(5 165 95)" />
+          {/* Knuckle lines */}
+          <path d="M153,112 Q165,109 177,112" fill="none" stroke="#D4976B" strokeWidth="0.8" opacity="0.4"
+            transform="rotate(5 165 112)" />
+          <path d="M152,92 Q165,89 178,92" fill="none" stroke="#D4976B" strokeWidth="0.8" opacity="0.3"
+            transform="rotate(5 165 92)" />
+          {/* Fingernail */}
+          <path d="M157,46 Q157,36 167,36 Q177,36 177,46 Q177,53 167,54 Q157,53 157,46 Z"
+            fill="url(#nailGrad)" stroke="#E0B8A8" strokeWidth="1"
+            transform="rotate(5 167 45)" />
+          {/* Question mark */}
           {interactive && (
-            <text x="182" y="112" textAnchor="middle" fill="#FF5733" fontWeight="900"
-              fontSize="20" fontFamily="monospace" transform="rotate(8 182 112)">?</text>
+            <text x="167" y="85" textAnchor="middle" fill="#FF5733" fontWeight="900"
+              fontSize="22" fontFamily="'Space Mono', monospace"
+              transform="rotate(5 167 85)">?</text>
           )}
         </g>
-
-        {/* Wrist */}
-        <rect x="100" y="295" width="80" height="45" rx="10" fill="#F5D0A9" stroke="#D4A574" strokeWidth="1.5" />
       </svg>
 
       {/* Floating labels after reveal */}
       {revealedSide && (
         <>
           <div style={{
-            position: "absolute", left: -10, top: 20,
+            position: "absolute", left: -10, top: 10,
             background: revealedSide === "left" ? "#FF5733" : "#1A1A1A",
             color: "#FAFAFA",
             padding: "6px 14px", borderRadius: 20,
@@ -112,7 +158,7 @@ export default function Hand({
             {leftLabel}
           </div>
           <div style={{
-            position: "absolute", right: -10, top: 30,
+            position: "absolute", right: -10, top: 20,
             background: revealedSide === "right" ? "#FF5733" : "#1A1A1A",
             color: "#FAFAFA",
             padding: "6px 14px", borderRadius: 20,
@@ -132,15 +178,17 @@ export default function Hand({
       {interactive && !revealedSide && (
         <div style={{
           display: "flex", justifyContent: "center", gap: 60,
-          marginTop: 10,
+          marginTop: 4,
         }}>
           <span style={{
             color: hovered === "left" ? "#FF5733" : "#888",
             fontSize: 13, transition: "color 0.3s",
+            fontFamily: "'Space Mono', monospace",
           }}>← this one?</span>
           <span style={{
             color: hovered === "right" ? "#FF5733" : "#888",
             fontSize: 13, transition: "color 0.3s",
+            fontFamily: "'Space Mono', monospace",
           }}>or this? →</span>
         </div>
       )}

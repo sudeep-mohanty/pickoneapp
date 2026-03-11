@@ -253,7 +253,8 @@ function RevealScreen({ session }) {
       }}>
         Share the verdict
       </div>
-      <div style={{ display: "flex", gap: 10, marginBottom: 12 }}>
+      {/* Row 1: Main platforms */}
+      <div style={{ display: "flex", gap: 8, marginBottom: 8 }}>
         <a
           href={`https://wa.me/?text=${encodedText}%0A%0ATry%20it%20→%20${encodedUrl}`}
           target="_blank"
@@ -266,9 +267,36 @@ function RevealScreen({ session }) {
           href={`https://twitter.com/intent/tweet?text=${encodedText}&url=${encodedUrl}`}
           target="_blank"
           rel="noopener noreferrer"
-          style={{ ...socialBtnStyle, background: "#1A1A1A", color: "#FAFAFA", border: "2px solid #333" }}
+          style={{ ...socialBtnStyle, background: "#000", color: "#FAFAFA", border: "2px solid #333" }}
         >
           𝕏 Post
+        </a>
+        <a
+          href={`https://t.me/share/url?url=${encodedUrl}&text=${encodedText}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{ ...socialBtnStyle, background: "#0088cc", color: "#fff" }}
+        >
+          Telegram
+        </a>
+      </div>
+      {/* Row 2: More platforms + copy */}
+      <div style={{ display: "flex", gap: 8, marginBottom: 12 }}>
+        <a
+          href={`https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}&quote=${encodedText}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{ ...socialBtnStyle, background: "#1877F2", color: "#fff" }}
+        >
+          Facebook
+        </a>
+        <a
+          href={`https://www.reddit.com/submit?url=${encodedUrl}&title=${encodeURIComponent(`The finger has spoken: "${chosen}"!`)}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{ ...socialBtnStyle, background: "#FF4500", color: "#fff" }}
+        >
+          Reddit
         </a>
         <button
           onClick={handleCopy}
