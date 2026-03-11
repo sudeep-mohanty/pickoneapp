@@ -115,7 +115,7 @@ export default function Hand({
             ? "popIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275)"
             : "none",
         }}>
-          {revealedSide === "left" ? "☝️" : revealedSide === "right" ? "🖕" : "✌️"}
+          {revealedSide === "left" ? "🖕" : revealedSide === "right" ? "☝️" : "✌️"}
         </span>
       </div>
 
