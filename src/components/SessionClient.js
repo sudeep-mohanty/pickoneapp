@@ -60,19 +60,35 @@ function WaitingScreen({ session, shareUrl }) {
         Share this link. When they pick, you'll see it here.
       </p>
 
-      {/* Link display */}
-      <div style={{
-        background: "#1A1A1A",
-        border: "2px solid #333",
-        borderRadius: 14,
-        padding: "14px 18px",
-        fontFamily: "'Space Mono', monospace",
-        fontSize: 14,
-        color: "#FFD700",
-        wordBreak: "break-all",
-        marginBottom: 20,
-      }}>
-        {shareUrl}
+      {/* Link display with copy icon */}
+      <div
+        onClick={async () => {
+          await navigator.clipboard.writeText(shareUrl);
+          setToast(true);
+          setTimeout(() => setToast(false), 2000);
+        }}
+        style={{
+          background: "#1A1A1A",
+          border: "2px solid #333",
+          borderRadius: 14,
+          padding: "14px 18px",
+          fontFamily: "'Space Mono', monospace",
+          fontSize: 14,
+          color: "#FFD700",
+          wordBreak: "break-all",
+          marginBottom: 20,
+          cursor: "pointer",
+          display: "flex",
+          alignItems: "center",
+          gap: 10,
+          transition: "border-color 0.2s",
+        }}
+      >
+        <span style={{ flex: 1 }}>{shareUrl}</span>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#888" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+          <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
+          <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+        </svg>
       </div>
 
       <button
