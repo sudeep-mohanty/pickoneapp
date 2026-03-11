@@ -145,23 +145,36 @@ function RevealScreen({ session }) {
   const [toast, setToast] = useState(false);
 
   const chosen = session.picked === "left" ? session.opt1 : session.opt2;
+  const shareText = `🖕 The finger has spoken: "${chosen}"!\n\n"${session.opt1}" vs "${session.opt2}" — settled in one tap.`;
+  const shareUrl = BASE_URL;
+  const encodedText = encodeURIComponent(shareText);
+  const encodedUrl = encodeURIComponent(shareUrl);
 
   useEffect(() => {
     const t = setTimeout(() => setShowConfetti(false), 4000);
     return () => clearTimeout(t);
   }, []);
 
-  const handleShare = async () => {
-    const text = `✌️ Pick One decided: ${chosen}!\n\nThe options were "${session.opt1}" vs "${session.opt2}"\n\nTry it → ${BASE_URL}`;
+  const handleCopy = async () => {
+    const text = `${shareText}\n\nTry it → ${shareUrl}`;
     if (navigator.share) {
       try {
-        await navigator.share({ title: "Pick One Result", text });
+        await navigator.share({ title: "Pick One", text });
         return;
       } catch { /* cancelled */ }
     }
     await navigator.clipboard.writeText(text);
     setToast(true);
     setTimeout(() => setToast(false), 2000);
+  };
+
+  const socialBtnStyle = {
+    flex: 1, padding: "12px 8px", fontSize: 13,
+    fontFamily: "'Space Mono', monospace", fontWeight: 700,
+    border: "none", borderRadius: 12, cursor: "pointer",
+    textDecoration: "none", textAlign: "center",
+    display: "flex", alignItems: "center", justifyContent: "center",
+    gap: 6,
   };
 
   return (
@@ -216,33 +229,54 @@ function RevealScreen({ session }) {
         </div>
       </div>
 
-      {/* Actions */}
-      <div style={{ display: "flex", gap: 12, marginTop: 28 }}>
-        <button
-          onClick={handleShare}
-          style={{
-            flex: 1, padding: 14, fontSize: 14,
-            fontFamily: "'Space Mono', monospace", fontWeight: 700,
-            background: "linear-gradient(135deg, #40C4FF, #FF4081)",
-            color: "#000", border: "none", borderRadius: 14, cursor: "pointer",
-          }}
-        >
-          📤 Share
-        </button>
-        <a
-          href="/"
-          style={{
-            flex: 1, padding: 14, fontSize: 14,
-            fontFamily: "'Space Mono', monospace", fontWeight: 700,
-            background: "#1A1A1A", color: "#FAFAFA",
-            border: "2px solid #333", borderRadius: 14,
-            cursor: "pointer", textDecoration: "none",
-            display: "flex", alignItems: "center", justifyContent: "center",
-          }}
-        >
-          🔄 New
-        </a>
+      {/* Social share buttons */}
+      <div style={{
+        marginTop: 24, marginBottom: 8,
+        color: "#555", fontFamily: "'Space Mono', monospace",
+        fontSize: 11, textTransform: "uppercase", letterSpacing: 2,
+      }}>
+        Share the verdict
       </div>
+      <div style={{ display: "flex", gap: 10, marginBottom: 12 }}>
+        <a
+          href={`https://wa.me/?text=${encodedText}%0A%0ATry%20it%20→%20${encodedUrl}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{ ...socialBtnStyle, background: "#25D366", color: "#fff" }}
+        >
+          WhatsApp
+        </a>
+        <a
+          href={`https://twitter.com/intent/tweet?text=${encodedText}&url=${encodedUrl}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{ ...socialBtnStyle, background: "#1A1A1A", color: "#FAFAFA", border: "2px solid #333" }}
+        >
+          𝕏 Post
+        </a>
+        <button
+          onClick={handleCopy}
+          style={{ ...socialBtnStyle, background: "linear-gradient(135deg, #40C4FF, #FF4081)", color: "#000" }}
+        >
+          📤 Copy
+        </button>
+      </div>
+
+      {/* CTA: Make your own */}
+      <a
+        href="/"
+        style={{
+          display: "block", width: "100%", padding: 16, fontSize: 15,
+          fontFamily: "'Dela Gothic One', cursive", fontWeight: 700,
+          background: "linear-gradient(135deg, #FF5733, #FFD700)",
+          color: "#000", border: "none", borderRadius: 14,
+          cursor: "pointer", textDecoration: "none",
+          textAlign: "center", letterSpacing: 1,
+          textTransform: "uppercase",
+        }}
+      >
+        ✌️ Make your own
+      </a>
 
       <ShareToast visible={toast} />
     </div>
