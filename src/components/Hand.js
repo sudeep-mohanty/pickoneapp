@@ -108,20 +108,27 @@ export default function Hand({
           </>
         )}
 
-        {/* The actual emoji */}
+        {/* The actual emoji — changes on reveal */}
         <span style={{
           display: "block",
-          animation: interactive ? "none" : "popIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275)",
+          animation: revealedSide
+            ? "popIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275)"
+            : "none",
         }}>
-          ✌️
+          {revealedSide === "left" ? "☝️" : revealedSide === "right" ? "🖕" : "✌️"}
         </span>
       </div>
 
-      {/* Floating labels after reveal */}
+      {/* Labels shown side by side after reveal */}
       {revealedSide && (
-        <>
+        <div style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          gap: 16,
+          marginTop: 12,
+        }}>
           <div style={{
-            position: "absolute", left: -5, top: 10,
             background: revealedSide === "left" ? "#FF5733" : "#1A1A1A",
             color: "#FAFAFA",
             padding: "8px 16px", borderRadius: 20,
@@ -135,7 +142,12 @@ export default function Hand({
             {leftLabel}
           </div>
           <div style={{
-            position: "absolute", right: -5, top: 20,
+            color: "#555", fontSize: 13,
+            fontFamily: "'Space Mono', monospace",
+          }}>
+            vs
+          </div>
+          <div style={{
             background: revealedSide === "right" ? "#FF5733" : "#1A1A1A",
             color: "#FAFAFA",
             padding: "8px 16px", borderRadius: 20,
@@ -148,7 +160,7 @@ export default function Hand({
           }}>
             {rightLabel}
           </div>
-        </>
+        </div>
       )}
 
       {/* Hover hints */}
