@@ -178,17 +178,19 @@ export default function Hand({
       {interactive && !revealedSide && (
         <div style={{
           display: "flex", justifyContent: "center", gap: 60,
-          marginTop: 4,
+          marginTop: 16, marginBottom: 20,
         }}>
           <span style={{
             color: hovered === "left" ? "#FF5733" : "#888",
-            fontSize: 13, transition: "color 0.3s",
+            fontSize: 15, transition: "color 0.3s",
             fontFamily: "'Space Mono', monospace",
+            fontWeight: 700,
           }}>← this one?</span>
           <span style={{
             color: hovered === "right" ? "#FF5733" : "#888",
-            fontSize: 13, transition: "color 0.3s",
+            fontSize: 15, transition: "color 0.3s",
             fontFamily: "'Space Mono', monospace",
+            fontWeight: 700,
           }}>or this? →</span>
         </div>
       )}

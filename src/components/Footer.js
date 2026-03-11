@@ -4,7 +4,7 @@ export default function Footer() {
   return (
     <footer style={{
       textAlign: "center",
-      marginTop: 40,
+      marginTop: 60,
       paddingBottom: 24,
       display: "flex",
       flexDirection: "column",
