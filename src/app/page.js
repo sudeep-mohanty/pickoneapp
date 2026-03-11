@@ -106,7 +106,7 @@ export default function HomePage() {
                 marginBottom: 6, display: "block",
                 textTransform: "uppercase", letterSpacing: 2,
               }}>
-                🤟 Ring finger
+                🖕 Ring finger
               </label>
               <input
                 id="opt2-input"
