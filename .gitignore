@@ -1,0 +1,27 @@
+# dependencies
+node_modules/
+
+# next.js
+.next/
+out/
+
+# environment / secrets
+.env
+.env.local
+.env*.local
+.env.production
+.env.development
+
+# OS
+.DS_Store
+Thumbs.db
+
+# debug
+npm-debug.log*
+
+# vercel
+.vercel
+
+# firebase
+.firebase/
+firebase-debug.log

@@ -1,0 +1,28 @@
+<svg width="1200" height="630" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0D0D0D"/>
+      <stop offset="100%" style="stop-color:#1A1A1A"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#FF5733"/>
+      <stop offset="100%" style="stop-color:#FFD700"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  
+  <!-- Hand emoji area -->
+  <text x="600" y="250" text-anchor="middle" font-size="120" fill="white">✌️</text>
+  
+  <!-- Title -->
+  <text x="600" y="370" text-anchor="middle" font-family="sans-serif" font-weight="900" font-size="72" fill="white">Pick One</text>
+  
+  <!-- Subtitle -->
+  <text x="600" y="430" text-anchor="middle" font-family="monospace" font-size="24" fill="#888888">set two options. share the link. let fate decide.</text>
+  
+  <!-- Domain -->
+  <text x="600" y="560" text-anchor="middle" font-family="monospace" font-size="20" fill="url(#accent)">pickoneapp.fun</text>
+  
+  <!-- Accent line -->
+  <rect x="480" y="460" width="240" height="3" rx="1.5" fill="url(#accent)" opacity="0.5"/>
+</svg>

@@ -1,0 +1,20 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /sessions/{sessionId} {
+      // Anyone can read (to open a shared link)
+      allow read: if true;
+      
+      // Anyone can create (to start a new game)
+      allow create: if true;
+      
+      // Can only update if 'picked' is currently null (one-time pick)
+      // and only the 'picked' field is being changed
+      allow update: if resource.data.picked == null
+                    && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['picked']);
+      
+      // No deletes allowed from client
+      allow delete: if false;
+    }
+  }
+}
