@@ -185,12 +185,86 @@ function RevealScreen({ session }) {
   };
 
   const socialBtnStyle = {
-    flex: 1, padding: "12px 8px", fontSize: 13,
+    flex: "1 1 0", minWidth: 0, padding: "12px 6px", fontSize: 12,
     fontFamily: "'Space Mono', monospace", fontWeight: 700,
     border: "none", borderRadius: 12, cursor: "pointer",
     textDecoration: "none", textAlign: "center",
     display: "flex", alignItems: "center", justifyContent: "center",
-    gap: 6,
+    gap: 4, overflow: "hidden", whiteSpace: "nowrap",
+  };
+
+  const generateShareCard = () => {
+    const canvas = document.createElement("canvas");
+    canvas.width = 1080;
+    canvas.height = 1920;
+    const ctx = canvas.getContext("2d");
+
+    // Background
+    ctx.fillStyle = "#0D0D0D";
+    ctx.fillRect(0, 0, 1080, 1920);
+
+    // Gradient accent bar at top
+    const grad = ctx.createLinearGradient(0, 0, 1080, 0);
+    grad.addColorStop(0, "#FF5733");
+    grad.addColorStop(1, "#FFD700");
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, 1080, 8);
+
+    // Hand emoji
+    ctx.font = "200px serif";
+    ctx.textAlign = "center";
+    ctx.fillText(session.picked === "left" ? "\u{1F595}" : "\u261D\uFE0F", 540, 650);
+
+    // "The finger has spoken"
+    ctx.fillStyle = "#888888";
+    ctx.font = "bold 36px 'Space Mono', monospace";
+    ctx.fillText("the finger has spoken", 540, 780);
+
+    // Result
+    ctx.fillStyle = "#FAFAFA";
+    ctx.font = "bold 72px 'Space Mono', monospace";
+    const chosenText = chosen.length > 18 ? chosen.slice(0, 18) + "..." : chosen;
+    ctx.fillText(chosenText, 540, 900);
+
+    // Options
+    ctx.fillStyle = "#555555";
+    ctx.font = "bold 32px 'Space Mono', monospace";
+    ctx.fillText(`"${session.opt1}" vs "${session.opt2}"`, 540, 1000);
+
+    // Branding
+    ctx.fillStyle = "#FF5733";
+    ctx.font = "bold 40px 'Space Mono', monospace";
+    ctx.fillText("pickoneapp.fun", 540, 1200);
+
+    ctx.fillStyle = "#555555";
+    ctx.font = "28px 'Space Mono', monospace";
+    ctx.fillText("set two options. let fate decide. ✌️", 540, 1260);
+
+    return canvas;
+  };
+
+  const handleShareStory = async () => {
+    try {
+      const canvas = generateShareCard();
+      const blob = await new Promise(r => canvas.toBlob(r, "image/png"));
+      const file = new File([blob], "pickone-result.png", { type: "image/png" });
+
+      if (navigator.canShare?.({ files: [file] })) {
+        await navigator.share({
+          files: [file],
+          title: "Pick One",
+          text: shareText,
+        });
+      } else {
+        // Fallback: download the image
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "pickone-result.png";
+        a.click();
+        URL.revokeObjectURL(url);
+      }
+    } catch { /* cancelled */ }
   };
 
   return (
@@ -254,7 +328,7 @@ function RevealScreen({ session }) {
         Share the verdict
       </div>
       {/* Row 1: Main platforms */}
-      <div style={{ display: "flex", gap: 8, marginBottom: 8 }}>
+      <div style={{ display: "flex", gap: 6, marginBottom: 6 }}>
         <a
           href={`https://wa.me/?text=${encodedText}%0A%0ATry%20it%20→%20${encodedUrl}`}
           target="_blank"
@@ -281,7 +355,7 @@ function RevealScreen({ session }) {
         </a>
       </div>
       {/* Row 2: More platforms + copy */}
-      <div style={{ display: "flex", gap: 8, marginBottom: 12 }}>
+      <div style={{ display: "flex", gap: 6, marginBottom: 6 }}>
         <a
           href={`https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}&quote=${encodedText}`}
           target="_blank"
@@ -302,9 +376,23 @@ function RevealScreen({ session }) {
           onClick={handleCopy}
           style={{ ...socialBtnStyle, background: "linear-gradient(135deg, #40C4FF, #FF4081)", color: "#000" }}
         >
-          📤 Copy
+          Copy
         </button>
       </div>
+      {/* Row 3: Instagram Stories */}
+      <button
+        onClick={handleShareStory}
+        style={{
+          width: "100%", padding: 14, fontSize: 14,
+          fontFamily: "'Space Mono', monospace", fontWeight: 700,
+          background: "linear-gradient(135deg, #833AB4, #FD1D1D, #F77737)",
+          color: "#fff", border: "none", borderRadius: 12,
+          cursor: "pointer", marginBottom: 12,
+          display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
+        }}
+      >
+        📸 Share to Stories
+      </button>
 
       {/* CTA: Make your own */}
       <a
@@ -474,7 +562,7 @@ export default function SessionPage() {
       display: "flex",
       alignItems: "center",
       justifyContent: "center",
-      padding: 20,
+      padding: "20px 16px",
     }}>
       <div style={{ width: "100%", maxWidth: 380 }}>
         {renderContent()}

@@ -5,12 +5,30 @@ import { createSession } from "@/lib/firebase";
 import ProgressBar from "@/components/ProgressBar";
 import Footer from "@/components/Footer";
 
+const PLACEHOLDER_PAIRS = [
+  ["Pizza tonight", "Sushi tonight"],
+  ["Beach day", "Mountains day"],
+  ["Call mom", "Text mom"],
+  ["Left door", "Right door"],
+  ["Cat video", "Dog video"],
+  ["Coffee", "Chai"],
+  ["Movie night", "Game night"],
+  ["Cook dinner", "Order in"],
+  ["Gym today", "Rest day"],
+  ["Read a book", "Watch Netflix"],
+];
+
+function getRandomPair() {
+  return PLACEHOLDER_PAIRS[Math.floor(Math.random() * PLACEHOLDER_PAIRS.length)];
+}
+
 export default function HomePage() {
   const router = useRouter();
   const [opt1, setOpt1] = useState("");
   const [opt2, setOpt2] = useState("");
   const [loading, setLoading] = useState(false);
   const [focused, setFocused] = useState(null);
+  const [placeholders] = useState(() => getRandomPair());
 
   const canSubmit = opt1.trim() && opt2.trim() && !loading;
 
@@ -92,7 +110,7 @@ export default function HomePage() {
                 onChange={(e) => setOpt1(e.target.value)}
                 onFocus={() => setFocused(1)}
                 onBlur={() => setFocused(null)}
-                placeholder="Pizza tonight"
+                placeholder={placeholders[0]}
                 maxLength={50}
                 style={inputStyle(focused === 1)}
                 onKeyDown={(e) => e.key === "Enter" && document.getElementById("opt2-input")?.focus()}
@@ -114,7 +132,7 @@ export default function HomePage() {
                 onChange={(e) => setOpt2(e.target.value)}
                 onFocus={() => setFocused(2)}
                 onBlur={() => setFocused(null)}
-                placeholder="Sushi tonight"
+                placeholder={placeholders[1]}
                 maxLength={50}
                 style={inputStyle(focused === 2)}
                 onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
@@ -146,6 +164,17 @@ export default function HomePage() {
           >
             {loading ? "Creating..." : "Lock it in 🔒"}
           </button>
+          {!canSubmit && !loading && (
+            <p style={{
+              color: "#555",
+              fontFamily: "'Space Mono', monospace",
+              fontSize: 12,
+              textAlign: "center",
+              marginTop: 10,
+            }}>
+              fill in both options to continue
+            </p>
+          )}
         </div>
 
         <Footer />

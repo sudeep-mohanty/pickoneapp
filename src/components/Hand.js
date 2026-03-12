@@ -18,11 +18,11 @@ export default function Hand({
   };
 
   return (
-    <div style={{ position: "relative", width: 280, margin: "0 auto", userSelect: "none" }}>
+    <div style={{ position: "relative", width: "100%", maxWidth: 280, margin: "0 auto", userSelect: "none" }}>
       {/* The emoji hand */}
       <div style={{
         position: "relative",
-        fontSize: 180,
+        fontSize: revealedSide ? 140 : 180,
         lineHeight: 1,
         textAlign: "center",
         filter: revealedSide
@@ -136,6 +136,9 @@ export default function Hand({
             fontFamily: "'Space Mono', monospace",
             border: revealedSide === "left" ? "2px solid #FFD700" : "1px solid #888",
             whiteSpace: "nowrap",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            maxWidth: "40%",
             boxShadow: revealedSide === "left" ? "0 0 20px rgba(255,87,51,0.5)" : "none",
             animation: "popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)",
           }}>
@@ -144,6 +147,7 @@ export default function Hand({
           <div style={{
             color: "#555", fontSize: 13,
             fontFamily: "'Space Mono', monospace",
+            flexShrink: 0,
           }}>
             vs
           </div>
@@ -155,6 +159,9 @@ export default function Hand({
             fontFamily: "'Space Mono', monospace",
             border: revealedSide === "right" ? "2px solid #FFD700" : "1px solid #888",
             whiteSpace: "nowrap",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            maxWidth: "40%",
             boxShadow: revealedSide === "right" ? "0 0 20px rgba(255,87,51,0.5)" : "none",
             animation: "popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.1s both",
           }}>
