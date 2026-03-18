@@ -7,6 +7,7 @@ import {
   updateDoc,
   onSnapshot,
   serverTimestamp,
+  Timestamp,
 } from "firebase/firestore";
 import { nanoid } from "nanoid";
 
@@ -33,6 +34,7 @@ export async function createSession(opt1, opt2) {
     opt2,
     picked: null,
     createdAt: serverTimestamp(),
+    expiresAt: Timestamp.fromDate(new Date(Date.now() + 24 * 60 * 60 * 1000)),
   });
 
   return id;
