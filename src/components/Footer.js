@@ -1,48 +1,50 @@
 "use client";
+import { useState } from "react";
 
 export default function Footer() {
+  const [hovered, setHovered] = useState(false);
+
   return (
     <footer style={{
       textAlign: "center",
-      marginTop: 60,
-      paddingBottom: 24,
+      marginTop: 56,
+      paddingBottom: 28,
       display: "flex",
       flexDirection: "column",
       alignItems: "center",
-      gap: 8,
+      gap: 10,
     }}>
       <a
         href="https://ko-fi.com/sudeepmohanty"
         target="_blank"
         rel="noopener noreferrer"
+        onMouseEnter={() => setHovered(true)}
+        onMouseLeave={() => setHovered(false)}
         style={{
-          color: "#888",
-          fontSize: 12,
+          color: hovered ? "var(--text)" : "var(--muted)",
+          fontSize: 13,
+          fontWeight: 500,
           textDecoration: "none",
-          fontFamily: "'Space Mono', monospace",
-          padding: "6px 14px",
-          borderRadius: 20,
-          border: "1px solid #333",
-          transition: "all 0.3s",
-        }}
-        onMouseEnter={(e) => {
-          e.target.style.borderColor = "#FF5733";
-          e.target.style.color = "#FAFAFA";
-        }}
-        onMouseLeave={(e) => {
-          e.target.style.borderColor = "#333";
-          e.target.style.color = "#888";
+          padding: "8px 18px",
+          borderRadius: "var(--radius-pill)",
+          background: hovered ? "var(--elevated)" : "transparent",
+          border: `1px solid ${hovered ? "var(--border-hover)" : "var(--border)"}`,
+          transition: "var(--transition-medium)",
+          display: "inline-flex",
+          alignItems: "center",
+          gap: 6,
         }}
       >
-        ☕ Support this app
+        <span style={{ fontSize: 14 }}>&#9749;</span>
+        Support this app
       </a>
       <div style={{
-        color: "#333",
-        fontFamily: "'Space Mono', monospace",
-        fontSize: 10,
-        letterSpacing: 1,
+        color: "var(--border)",
+        fontSize: 11,
+        fontWeight: 500,
+        letterSpacing: 0.5,
       }}>
-        made with ✌️
+        made with &#9996;&#65039;
       </div>
     </footer>
   );

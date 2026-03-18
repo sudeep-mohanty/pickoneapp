@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { createSession } from "@/lib/firebase";
 import ProgressBar from "@/components/ProgressBar";
@@ -16,6 +16,21 @@ const PLACEHOLDER_PAIRS = [
   ["Cook dinner", "Order in"],
   ["Gym today", "Rest day"],
   ["Read a book", "Watch Netflix"],
+  // AI & tech CEOs
+  ["Sam Altman", "Dario Amodei"],
+  ["OpenAI", "Anthropic"],
+  ["ChatGPT", "Claude"],
+  ["Sundar Pichai", "Satya Nadella"],
+  ["Google", "Microsoft"],
+  ["Gemini", "Copilot"],
+  ["Elon Musk", "Sam Altman"],
+  ["Grok", "ChatGPT"],
+  ["Jensen Huang", "Lisa Su"],
+  ["NVIDIA", "AMD"],
+  ["Mark Zuckerberg", "Tim Cook"],
+  ["Meta AI", "Apple Intelligence"],
+  ["Open source AI", "Closed source AI"],
+  ["AGI doomer", "AGI accelerationist"],
 ];
 
 function getRandomPair() {
@@ -29,16 +44,17 @@ export default function HomePage() {
   const [loading, setLoading] = useState(false);
   const [focused, setFocused] = useState(null);
   const [placeholders] = useState(() => getRandomPair());
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => setMounted(true), []);
 
   const canSubmit = opt1.trim() && opt2.trim() && !loading;
 
   const handleSubmit = async () => {
     if (!canSubmit) return;
     setLoading(true);
-
     try {
       const id = await createSession(opt1.trim(), opt2.trim());
-      // Navigate to the session page in "creator" mode
       window.location.href = `/${id}?role=creator`;
     } catch (err) {
       console.error("Failed to create session:", err);
@@ -46,64 +62,77 @@ export default function HomePage() {
     }
   };
 
-  const inputStyle = (isFocused) => ({
-    width: "100%",
-    padding: "14px 16px",
-    fontSize: 16,
-    fontFamily: "'Space Mono', monospace",
-    background: isFocused ? "#222" : "#1A1A1A",
-    color: "#FAFAFA",
-    border: isFocused ? "2px solid #FF5733" : "2px solid #333",
-    borderRadius: 14,
-    outline: "none",
-    transition: "all 0.3s",
-  });
-
   return (
     <main style={{
-      minHeight: "100vh",
+      minHeight: "100dvh",
       display: "flex",
+      flexDirection: "column",
       alignItems: "center",
       justifyContent: "center",
-      padding: 20,
+      padding: "24px 20px",
     }}>
-      <div style={{ width: "100%", maxWidth: 380 }}>
+      <div style={{
+        width: "100%",
+        maxWidth: 420,
+        opacity: mounted ? 1 : 0,
+        transition: "opacity 0.4s ease",
+      }}>
         <ProgressBar step="create" />
 
-        <div className="fade-up">
-          {/* Header */}
-          <div style={{ textAlign: "center", marginBottom: 40 }}>
-            <div style={{ fontSize: 48, marginBottom: 8 }}>✌️</div>
-            <h1 style={{
-              fontFamily: "'Dela Gothic One', cursive",
-              fontSize: 36,
-              color: "#FAFAFA",
-              margin: 0,
-              letterSpacing: -1,
-            }}>
-              Pick One
-            </h1>
-            <p style={{
-              color: "#888",
-              fontFamily: "'Space Mono', monospace",
-              fontSize: 13,
-              marginTop: 8,
-            }}>
-              set two options. tap a finger or share the link. let fate decide.
-            </p>
+        {/* Hero */}
+        <div className="fade-up" style={{ textAlign: "center", marginBottom: 40 }}>
+          <div style={{
+            fontSize: 56,
+            marginBottom: 12,
+            animation: "float 3s ease-in-out infinite",
+          }}>
+            &#9996;&#65039;
           </div>
+          <h1 style={{
+            fontFamily: "'Dela Gothic One', cursive",
+            fontSize: 38,
+            color: "var(--text)",
+            margin: 0,
+            letterSpacing: -1.5,
+            lineHeight: 1.1,
+          }}>
+            Pick One
+          </h1>
+          <p style={{
+            color: "var(--text-secondary)",
+            fontSize: 15,
+            marginTop: 10,
+            fontWeight: 400,
+            lineHeight: 1.6,
+          }}>
+            Set two options. Ask someone to choose. Let fate decide.
+          </p>
+        </div>
 
-          {/* Inputs */}
-          <div style={{ display: "flex", flexDirection: "column", gap: 16, marginBottom: 32 }}>
+        {/* Card */}
+        <div className="fade-up" style={{
+          background: "var(--surface)",
+          border: "1px solid var(--border)",
+          borderRadius: "var(--radius-lg)",
+          padding: "28px 24px",
+          boxShadow: "var(--shadow-lg)",
+          animationDelay: "0.1s",
+        }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
+            {/* Index Finger input */}
             <div>
               <label style={{
-                color: "#FF5733",
-                fontFamily: "'Space Mono', monospace",
-                fontSize: 12, fontWeight: 700,
-                marginBottom: 6, display: "block",
-                textTransform: "uppercase", letterSpacing: 2,
+                color: "var(--accent)",
+                fontSize: 12,
+                fontWeight: 700,
+                marginBottom: 8,
+                display: "flex",
+                alignItems: "center",
+                gap: 6,
+                textTransform: "uppercase",
+                letterSpacing: 1.5,
               }}>
-                <span style={{ fontSize: 22, verticalAlign: "middle" }}>☝️</span> Index finger
+                <span style={{ fontSize: 18 }}>&#9757;&#65039;</span> Index finger
               </label>
               <input
                 value={opt1}
@@ -112,19 +141,51 @@ export default function HomePage() {
                 onBlur={() => setFocused(null)}
                 placeholder={placeholders[0]}
                 maxLength={50}
-                style={inputStyle(focused === 1)}
+                style={{
+                  width: "100%",
+                  padding: "14px 16px",
+                  fontSize: 16,
+                  fontFamily: "'Inter', sans-serif",
+                  fontWeight: 500,
+                  background: focused === 1 ? "var(--accent-bg)" : "var(--elevated)",
+                  color: "var(--text)",
+                  border: focused === 1 ? "2px solid var(--accent)" : "2px solid transparent",
+                  borderRadius: "var(--radius-sm)",
+                  outline: "none",
+                  transition: "var(--transition-fast)",
+                  caretColor: "var(--accent)",
+                }}
                 onKeyDown={(e) => e.key === "Enter" && document.getElementById("opt2-input")?.focus()}
               />
             </div>
+
+            {/* VS divider */}
+            <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+              <div style={{ flex: 1, height: 1, background: "var(--border)" }} />
+              <span style={{
+                color: "var(--muted)",
+                fontSize: 11,
+                fontWeight: 700,
+                textTransform: "uppercase",
+                letterSpacing: 2,
+              }}>vs</span>
+              <div style={{ flex: 1, height: 1, background: "var(--border)" }} />
+            </div>
+
+            {/* Ring Finger input */}
             <div>
               <label style={{
-                color: "#FFD700",
-                fontFamily: "'Space Mono', monospace",
-                fontSize: 12, fontWeight: 700,
-                marginBottom: 6, display: "block",
-                textTransform: "uppercase", letterSpacing: 2,
+                color: "var(--accent2)",
+                fontSize: 12,
+                fontWeight: 700,
+                marginBottom: 8,
+                display: "flex",
+                alignItems: "center",
+                gap: 6,
+                textTransform: "uppercase",
+                letterSpacing: 1.5,
               }}>
-                <span style={{ fontSize: 22, verticalAlign: "middle" }}>🖕</span> Ring finger
+                <span style={{ fontSize: 18 }}>&#128405;</span> Ring finger
               </label>
               <input
                 id="opt2-input"
@@ -134,7 +195,20 @@ export default function HomePage() {
                 onBlur={() => setFocused(null)}
                 placeholder={placeholders[1]}
                 maxLength={50}
-                style={inputStyle(focused === 2)}
+                style={{
+                  width: "100%",
+                  padding: "14px 16px",
+                  fontSize: 16,
+                  fontFamily: "'Inter', sans-serif",
+                  fontWeight: 500,
+                  background: focused === 2 ? "var(--accent2-bg)" : "var(--elevated)",
+                  color: "var(--text)",
+                  border: focused === 2 ? "2px solid var(--accent2)" : "2px solid transparent",
+                  borderRadius: "var(--radius-sm)",
+                  outline: "none",
+                  transition: "var(--transition-fast)",
+                  caretColor: "var(--accent2)",
+                }}
                 onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
               />
             </div>
@@ -146,36 +220,60 @@ export default function HomePage() {
             disabled={!canSubmit}
             style={{
               width: "100%",
-              padding: 18,
-              fontSize: 18,
-              fontFamily: "'Dela Gothic One', cursive",
+              padding: "16px 24px",
+              marginTop: 28,
+              fontSize: 16,
               fontWeight: 700,
-              background: canSubmit
-                ? "linear-gradient(135deg, #FF5733, #FFD700)"
-                : "#333",
-              color: canSubmit ? "#000" : "#666",
+              fontFamily: "'Inter', sans-serif",
+              background: canSubmit ? "var(--accent)" : "var(--border)",
+              color: canSubmit ? "#fff" : "var(--muted)",
               border: "none",
-              borderRadius: 16,
+              borderRadius: "var(--radius-sm)",
               cursor: canSubmit ? "pointer" : "not-allowed",
-              transition: "all 0.3s",
-              letterSpacing: 1,
-              textTransform: "uppercase",
+              transition: "var(--transition-medium)",
+              letterSpacing: 0.3,
+              boxShadow: canSubmit ? "0 4px 14px rgba(255,87,51,0.25)" : "none",
+            }}
+            onMouseEnter={(e) => {
+              if (canSubmit) {
+                e.currentTarget.style.transform = "translateY(-1px)";
+                e.currentTarget.style.boxShadow = "0 6px 20px rgba(255,87,51,0.35)";
+              }
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = "translateY(0)";
+              if (canSubmit) {
+                e.currentTarget.style.boxShadow = "0 4px 14px rgba(255,87,51,0.25)";
+              }
             }}
           >
-            {loading ? "Creating..." : "Lock it in 🔒"}
+            {loading ? (
+              <span style={{ display: "inline-flex", alignItems: "center", gap: 8 }}>
+                <span style={{
+                  width: 16, height: 16,
+                  border: "2px solid rgba(255,255,255,0.3)",
+                  borderTopColor: "#fff",
+                  borderRadius: "50%",
+                  animation: "spin 0.6s linear infinite",
+                }} />
+                Creating...
+              </span>
+            ) : "Lock it in"}
           </button>
-          {!canSubmit && !loading && (
-            <p style={{
-              color: "#555",
-              fontFamily: "'Space Mono', monospace",
-              fontSize: 12,
-              textAlign: "center",
-              marginTop: 10,
-            }}>
-              fill in both options to continue
-            </p>
-          )}
         </div>
+
+        {/* Hint */}
+        {!canSubmit && !loading && (
+          <p style={{
+            color: "var(--muted)",
+            fontSize: 13,
+            textAlign: "center",
+            marginTop: 16,
+            animation: "fadeIn 0.3s ease",
+          }}>
+            Fill in both options to continue
+          </p>
+        )}
 
         <Footer />
       </div>

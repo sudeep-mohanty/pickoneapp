@@ -10,6 +10,7 @@ export default function Hand({
   rightLabel = "",
 }) {
   const [hovered, setHovered] = useState(null);
+  const [pressed, setPressed] = useState(null);
 
   const vibrate = () => {
     if (typeof navigator !== "undefined" && navigator.vibrate) {
@@ -17,177 +18,215 @@ export default function Hand({
     }
   };
 
+  const tapZoneStyle = (side) => {
+    const isHovered = hovered === side;
+    const isPressed = pressed === side;
+    return {
+      position: "absolute",
+      ...(side === "left" ? { left: "18%" } : { right: "18%" }),
+      top: "0%",
+      width: "30%",
+      height: "55%",
+      cursor: "pointer",
+      zIndex: 2,
+      borderRadius: 14,
+      background: isHovered ? "rgba(255,87,51,0.08)" : "transparent",
+      border: isHovered ? "1.5px solid rgba(255,87,51,0.2)" : "1.5px solid transparent",
+      transition: "var(--transition-fast)",
+      transform: isPressed ? "scale(0.95)" : "scale(1)",
+    };
+  };
+
   return (
-    <div style={{ position: "relative", width: "100%", maxWidth: 280, margin: "0 auto", userSelect: "none" }}>
-      {/* The emoji hand */}
+    <div style={{
+      position: "relative",
+      width: "100%",
+      maxWidth: 280,
+      margin: "0 auto",
+      userSelect: "none",
+      WebkitTapHighlightColor: "transparent",
+    }}>
       <div style={{
         position: "relative",
-        fontSize: revealedSide ? 110 : 140,
+        fontSize: revealedSide ? 100 : 130,
         lineHeight: 1,
         textAlign: "center",
         filter: revealedSide
-          ? "drop-shadow(0 0 40px rgba(255,215,0,0.4))"
+          ? "drop-shadow(0 4px 20px rgba(255,87,51,0.15))"
           : interactive
-            ? "drop-shadow(0 8px 24px rgba(0,0,0,0.4))"
+            ? "drop-shadow(0 4px 12px rgba(0,0,0,0.08))"
             : "none",
-        transition: "filter 0.3s",
+        transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
       }}>
-        {/* Clickable zones overlaid on the emoji */}
         {interactive && (
           <>
-            {/* Left tap zone = ring finger on ✌️ */}
             <div
               onClick={() => { vibrate(); onPickRight?.(); }}
               onMouseEnter={() => setHovered("left")}
-              onMouseLeave={() => setHovered(null)}
-              style={{
-                position: "absolute",
-                left: "18%",
-                top: "0%",
-                width: "30%",
-                height: "55%",
-                cursor: "pointer",
-                zIndex: 2,
-                borderRadius: 20,
-                background: hovered === "left" ? "rgba(255,87,51,0.15)" : "transparent",
-                border: hovered === "left" ? "2px solid rgba(255,87,51,0.4)" : "2px solid transparent",
-                transition: "all 0.2s",
-              }}
+              onMouseLeave={() => { setHovered(null); setPressed(null); }}
+              onMouseDown={() => setPressed("left")}
+              onMouseUp={() => setPressed(null)}
+              onTouchStart={() => { setHovered("left"); setPressed("left"); }}
+              onTouchEnd={() => { setHovered(null); setPressed(null); }}
+              style={tapZoneStyle("left")}
+              role="button"
+              aria-label="Pick ring finger"
+              tabIndex={0}
+              onKeyDown={(e) => e.key === "Enter" && onPickRight?.()}
             >
               <div style={{
                 position: "absolute",
                 top: "50%",
                 left: "50%",
                 transform: "translate(-50%, -50%)",
-                color: "#FF5733",
-                fontSize: 28,
-                fontWeight: 900,
-                fontFamily: "'Space Mono', monospace",
-                textShadow: "0 0 15px rgba(255,87,51,0.5)",
-                opacity: hovered === "left" ? 1 : 0.7,
-                transition: "opacity 0.2s",
+                width: 30,
+                height: 30,
+                borderRadius: "50%",
+                background: hovered === "left" ? "rgba(255,87,51,0.1)" : "rgba(0,0,0,0.03)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                transition: "var(--transition-fast)",
               }}>
-                ?
+                <span style={{
+                  color: "var(--accent)",
+                  fontSize: 16,
+                  fontWeight: 700,
+                  opacity: hovered === "left" ? 1 : 0.4,
+                  transition: "var(--transition-fast)",
+                }}>?</span>
               </div>
             </div>
-            {/* Right tap zone = index finger on ✌️ */}
             <div
               onClick={() => { vibrate(); onPickLeft?.(); }}
               onMouseEnter={() => setHovered("right")}
-              onMouseLeave={() => setHovered(null)}
-              style={{
-                position: "absolute",
-                right: "18%",
-                top: "0%",
-                width: "30%",
-                height: "55%",
-                cursor: "pointer",
-                zIndex: 2,
-                borderRadius: 20,
-                background: hovered === "right" ? "rgba(255,87,51,0.15)" : "transparent",
-                border: hovered === "right" ? "2px solid rgba(255,87,51,0.4)" : "2px solid transparent",
-                transition: "all 0.2s",
-              }}
+              onMouseLeave={() => { setHovered(null); setPressed(null); }}
+              onMouseDown={() => setPressed("right")}
+              onMouseUp={() => setPressed(null)}
+              onTouchStart={() => { setHovered("right"); setPressed("right"); }}
+              onTouchEnd={() => { setHovered(null); setPressed(null); }}
+              style={tapZoneStyle("right")}
+              role="button"
+              aria-label="Pick index finger"
+              tabIndex={0}
+              onKeyDown={(e) => e.key === "Enter" && onPickLeft?.()}
             >
               <div style={{
                 position: "absolute",
                 top: "50%",
                 left: "50%",
                 transform: "translate(-50%, -50%)",
-                color: "#FF5733",
-                fontSize: 28,
-                fontWeight: 900,
-                fontFamily: "'Space Mono', monospace",
-                textShadow: "0 0 15px rgba(255,87,51,0.5)",
-                opacity: hovered === "right" ? 1 : 0.7,
-                transition: "opacity 0.2s",
+                width: 30,
+                height: 30,
+                borderRadius: "50%",
+                background: hovered === "right" ? "rgba(255,87,51,0.1)" : "rgba(0,0,0,0.03)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                transition: "var(--transition-fast)",
               }}>
-                ?
+                <span style={{
+                  color: "var(--accent)",
+                  fontSize: 16,
+                  fontWeight: 700,
+                  opacity: hovered === "right" ? 1 : 0.4,
+                  transition: "var(--transition-fast)",
+                }}>?</span>
               </div>
             </div>
           </>
         )}
 
-        {/* The actual emoji — changes on reveal */}
         <span style={{
           display: "block",
           animation: revealedSide
             ? "popIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275)"
             : "none",
         }}>
-          {revealedSide === "left" ? "☝️" : revealedSide === "right" ? "🖕" : "✌️"}
+          {revealedSide === "left" ? "\u261D\uFE0F" : revealedSide === "right" ? "\uD83D\uDD95" : "\u270C\uFE0F"}
         </span>
       </div>
 
-      {/* Labels shown side by side after reveal */}
+      {/* Labels after reveal */}
       {revealedSide && (
         <div style={{
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          gap: 16,
-          marginTop: 12,
+          gap: 12,
+          marginTop: 16,
         }}>
           <div style={{
-            background: revealedSide === "left" ? "#FF5733" : "#1A1A1A",
-            color: "#FAFAFA",
-            padding: "8px 14px", borderRadius: 20,
-            fontSize: 14, fontWeight: 700,
-            fontFamily: "'Space Mono', monospace",
-            border: revealedSide === "left" ? "2px solid #FFD700" : "1px solid #888",
+            background: revealedSide === "left" ? "var(--accent)" : "var(--surface)",
+            color: revealedSide === "left" ? "#fff" : "var(--text-secondary)",
+            padding: "10px 16px",
+            borderRadius: "var(--radius-sm)",
+            fontSize: 14,
+            fontWeight: 600,
+            border: revealedSide === "left" ? "none" : "1px solid var(--border)",
             wordBreak: "break-word",
             textAlign: "center",
             flex: 1,
             minWidth: 0,
-            boxShadow: revealedSide === "left" ? "0 0 20px rgba(255,87,51,0.5)" : "none",
-            animation: "popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)",
+            boxShadow: revealedSide === "left" ? "0 4px 14px rgba(255,87,51,0.2)" : "var(--shadow-xs)",
+            animation: "popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)",
           }}>
             {leftLabel}
           </div>
           <div style={{
-            color: "#555", fontSize: 13,
-            fontFamily: "'Space Mono', monospace",
+            color: "var(--muted)",
+            fontSize: 12,
+            fontWeight: 600,
             flexShrink: 0,
+            letterSpacing: 1,
           }}>
             vs
           </div>
           <div style={{
-            background: revealedSide === "right" ? "#FF5733" : "#1A1A1A",
-            color: "#FAFAFA",
-            padding: "8px 14px", borderRadius: 20,
-            fontSize: 14, fontWeight: 700,
-            fontFamily: "'Space Mono', monospace",
-            border: revealedSide === "right" ? "2px solid #FFD700" : "1px solid #888",
+            background: revealedSide === "right" ? "var(--accent)" : "var(--surface)",
+            color: revealedSide === "right" ? "#fff" : "var(--text-secondary)",
+            padding: "10px 16px",
+            borderRadius: "var(--radius-sm)",
+            fontSize: 14,
+            fontWeight: 600,
+            border: revealedSide === "right" ? "none" : "1px solid var(--border)",
             wordBreak: "break-word",
             textAlign: "center",
             flex: 1,
             minWidth: 0,
-            boxShadow: revealedSide === "right" ? "0 0 20px rgba(255,87,51,0.5)" : "none",
-            animation: "popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.1s both",
+            boxShadow: revealedSide === "right" ? "0 4px 14px rgba(255,87,51,0.2)" : "var(--shadow-xs)",
+            animation: "popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.1s both",
           }}>
             {rightLabel}
           </div>
         </div>
       )}
 
-      {/* Hover hints */}
+      {/* Tap hints */}
       {interactive && !revealedSide && (
         <div style={{
-          display: "flex", justifyContent: "center", gap: 40,
-          marginTop: 12, marginBottom: 20,
+          display: "flex",
+          justifyContent: "center",
+          gap: 48,
+          marginTop: 16,
+          marginBottom: 20,
         }}>
           <span style={{
-            color: hovered === "left" ? "#FF5733" : "#666",
-            fontSize: 15, transition: "color 0.3s",
-            fontFamily: "'Space Mono', monospace",
-            fontWeight: 700,
-          }}>← this one?</span>
+            color: hovered === "left" ? "var(--accent)" : "var(--muted)",
+            fontSize: 13,
+            fontWeight: 600,
+            transition: "var(--transition-fast)",
+          }}>
+            &#8592; this one?
+          </span>
           <span style={{
-            color: hovered === "right" ? "#FF5733" : "#666",
-            fontSize: 15, transition: "color 0.3s",
-            fontFamily: "'Space Mono', monospace",
-            fontWeight: 700,
-          }}>or this? →</span>
+            color: hovered === "right" ? "var(--accent)" : "var(--muted)",
+            fontSize: 13,
+            fontWeight: 600,
+            transition: "var(--transition-fast)",
+          }}>
+            or this? &#8594;
+          </span>
         </div>
       )}
     </div>

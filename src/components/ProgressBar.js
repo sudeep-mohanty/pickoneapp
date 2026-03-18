@@ -1,7 +1,7 @@
 "use client";
 
 const STEPS = ["create", "pick", "result"];
-const LABELS = { create: "CREATE", pick: "PICK", result: "RESULT", waiting: "WAITING" };
+const LABELS = { create: "Create", pick: "Pick", result: "Result", waiting: "Waiting" };
 
 export default function ProgressBar({ step }) {
   const idx = STEPS.indexOf(step);
@@ -11,24 +11,26 @@ export default function ProgressBar({ step }) {
       display: "flex",
       justifyContent: "space-between",
       alignItems: "center",
-      marginBottom: 30,
-      padding: "0 4px",
+      marginBottom: 32,
+      padding: "0 2px",
     }}>
       <div style={{
-        fontFamily: "'Space Mono', monospace",
-        fontSize: 11,
-        color: "#888",
-        letterSpacing: 2,
+        fontSize: 12,
+        fontWeight: 600,
+        color: "var(--text-secondary)",
+        letterSpacing: 1,
         textTransform: "uppercase",
       }}>
         {LABELS[step] || step}
       </div>
-      <div style={{ display: "flex", gap: 6 }}>
+      <div style={{ display: "flex", gap: 5, alignItems: "center" }}>
         {STEPS.map((s, i) => (
           <div key={s} style={{
-            width: 24, height: 4, borderRadius: 2,
-            background: idx >= i ? "#FF5733" : "#333",
-            transition: "background 0.3s",
+            width: idx >= i ? 28 : 18,
+            height: 4,
+            borderRadius: 100,
+            background: idx >= i ? "var(--accent)" : "var(--border)",
+            transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
           }} />
         ))}
       </div>

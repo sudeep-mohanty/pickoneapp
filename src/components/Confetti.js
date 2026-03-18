@@ -2,8 +2,8 @@
 import { useEffect, useRef } from "react";
 
 const COLORS = [
-  "#FF5733", "#FFD700", "#00E676", "#FF4081",
-  "#40C4FF", "#E040FB", "#FF6D00", "#00E5FF",
+  "#FF5733", "#F59E0B", "#10B981", "#F43F5E",
+  "#3B82F6", "#8B5CF6", "#EC4899", "#06B6D4",
 ];
 
 export default function Confetti({ active }) {
@@ -24,16 +24,17 @@ export default function Confetti({ active }) {
     };
     resize();
 
-    particlesRef.current = Array.from({ length: 150 }, () => ({
+    particlesRef.current = Array.from({ length: 120 }, () => ({
       x: Math.random() * canvas.width,
       y: Math.random() * canvas.height * -1,
-      w: Math.random() * 10 + 5,
-      h: Math.random() * 6 + 3,
+      w: Math.random() * 8 + 4,
+      h: Math.random() * 5 + 3,
+      shape: Math.random() > 0.5 ? "rect" : "circle",
       color: COLORS[Math.floor(Math.random() * COLORS.length)],
-      vx: (Math.random() - 0.5) * 4,
-      vy: Math.random() * 5 + 3,
+      vx: (Math.random() - 0.5) * 3,
+      vy: Math.random() * 4 + 2.5,
       rot: Math.random() * 360,
-      rotSpeed: (Math.random() - 0.5) * 10,
+      rotSpeed: (Math.random() - 0.5) * 8,
       opacity: 1,
     }));
 
@@ -46,16 +47,26 @@ export default function Confetti({ active }) {
         alive = true;
         p.x += p.vx;
         p.y += p.vy;
-        p.vy += 0.08;
+        p.vy += 0.06;
         p.rot += p.rotSpeed;
-        if (p.y > canvas.height) p.opacity -= 0.02;
+        if (p.y > canvas.height) p.opacity -= 0.015;
 
         ctx.save();
         ctx.translate(p.x, p.y);
         ctx.rotate((p.rot * Math.PI) / 180);
         ctx.globalAlpha = Math.max(0, p.opacity);
         ctx.fillStyle = p.color;
-        ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+
+        if (p.shape === "circle") {
+          ctx.beginPath();
+          ctx.arc(0, 0, p.w / 2, 0, Math.PI * 2);
+          ctx.fill();
+        } else {
+          ctx.beginPath();
+          ctx.roundRect(-p.w / 2, -p.h / 2, p.w, p.h, 1);
+          ctx.fill();
+        }
+
         ctx.restore();
       });
 
