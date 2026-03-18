@@ -28,7 +28,7 @@ function ShareToast({ visible }) {
 }
 
 // ── WAITING SCREEN (Creator sees this after creating) ──
-function WaitingScreen({ session, shareUrl }) {
+function WaitingScreen({ session, shareUrl, onPick }) {
   const [toast, setToast] = useState(false);
 
   const handleShare = async () => {
@@ -55,10 +55,35 @@ function WaitingScreen({ session, shareUrl }) {
       </h2>
       <p style={{
         color: "#888", fontFamily: "'Space Mono', monospace",
-        fontSize: 13, marginBottom: 30,
+        fontSize: 13, marginBottom: 4,
       }}>
-        Share this link. When they pick, you'll see it here.
+        {session.opt1} <span style={{ color: "#FF5733" }}>vs</span> {session.opt2}
       </p>
+      <p style={{
+        color: "#FF5733", fontFamily: "'Space Mono', monospace",
+        fontSize: 12, marginBottom: 24,
+      }}>
+        pick a finger
+      </p>
+
+      <Hand
+        interactive={true}
+        onPickLeft={() => onPick("left")}
+        onPickRight={() => onPick("right")}
+      />
+
+      {/* Divider */}
+      <div style={{
+        display: "flex", alignItems: "center",
+        gap: 12, margin: "28px 0",
+      }}>
+        <div style={{ flex: 1, height: 1, background: "#333" }} />
+        <span style={{
+          color: "#666", fontFamily: "'Space Mono', monospace",
+          fontSize: 11, textTransform: "uppercase", letterSpacing: 2,
+        }}>or</span>
+        <div style={{ flex: 1, height: 1, background: "#333" }} />
+      </div>
 
       {/* Link display with copy icon */}
       <div
@@ -76,7 +101,7 @@ function WaitingScreen({ session, shareUrl }) {
           fontSize: 14,
           color: "#FFD700",
           wordBreak: "break-all",
-          marginBottom: 20,
+          marginBottom: 16,
           cursor: "pointer",
           display: "flex",
           alignItems: "center",
@@ -94,7 +119,7 @@ function WaitingScreen({ session, shareUrl }) {
       <button
         onClick={handleShare}
         style={{
-          width: "100%", padding: 18, fontSize: 16,
+          width: "100%", padding: 16, fontSize: 14,
           fontFamily: "'Dela Gothic One', cursive",
           fontWeight: 700,
           background: "linear-gradient(135deg, #40C4FF, #FF4081)",
@@ -103,19 +128,8 @@ function WaitingScreen({ session, shareUrl }) {
           textTransform: "uppercase",
         }}
       >
-        📤 Share Link
+        📤 Send link to someone
       </button>
-
-      {/* Waiting animation */}
-      <div style={{
-        marginTop: 40, color: "#888",
-        fontFamily: "'Space Mono', monospace",
-        fontSize: 13,
-      }}>
-        <div style={{ animation: "pulse 2s ease-in-out infinite" }}>
-          waiting for them to pick...
-        </div>
-      </div>
 
       <ShareToast visible={toast} />
     </div>
@@ -400,7 +414,7 @@ export default function SessionPage() {
       return (
         <>
           <ProgressBar step="waiting" />
-          <WaitingScreen session={session} shareUrl={shareUrl} />
+          <WaitingScreen session={session} shareUrl={shareUrl} onPick={handlePick} />
         </>
       );
     }

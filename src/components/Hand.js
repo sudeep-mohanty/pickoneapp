@@ -35,9 +35,9 @@ export default function Hand({
         {/* Clickable zones overlaid on the emoji */}
         {interactive && (
           <>
-            {/* Left finger tap zone */}
+            {/* Left tap zone = ring finger on ✌️ */}
             <div
-              onClick={() => { vibrate(); onPickLeft?.(); }}
+              onClick={() => { vibrate(); onPickRight?.(); }}
               onMouseEnter={() => setHovered("left")}
               onMouseLeave={() => setHovered(null)}
               style={{
@@ -70,9 +70,9 @@ export default function Hand({
                 ?
               </div>
             </div>
-            {/* Right finger tap zone */}
+            {/* Right tap zone = index finger on ✌️ */}
             <div
-              onClick={() => { vibrate(); onPickRight?.(); }}
+              onClick={() => { vibrate(); onPickLeft?.(); }}
               onMouseEnter={() => setHovered("right")}
               onMouseLeave={() => setHovered(null)}
               style={{
@@ -115,7 +115,7 @@ export default function Hand({
             ? "popIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275)"
             : "none",
         }}>
-          {revealedSide === "left" ? "🖕" : revealedSide === "right" ? "☝️" : "✌️"}
+          {revealedSide === "left" ? "☝️" : revealedSide === "right" ? "🖕" : "✌️"}
         </span>
       </div>
 

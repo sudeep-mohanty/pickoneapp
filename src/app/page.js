@@ -39,7 +39,7 @@ export default function HomePage() {
     try {
       const id = await createSession(opt1.trim(), opt2.trim());
       // Navigate to the session page in "creator" mode
-      router.push(`/${id}?role=creator`);
+      window.location.href = `/${id}?role=creator`;
     } catch (err) {
       console.error("Failed to create session:", err);
       setLoading(false);
@@ -89,7 +89,7 @@ export default function HomePage() {
               fontSize: 13,
               marginTop: 8,
             }}>
-              set two options. share the link. let fate decide.
+              set two options. tap a finger or share the link. let fate decide.
             </p>
           </div>
 
