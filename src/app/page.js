@@ -48,8 +48,8 @@ export default function HomePage() {
 
   const inputStyle = (isFocused) => ({
     width: "100%",
-    padding: "16px 20px",
-    fontSize: 18,
+    padding: "14px 16px",
+    fontSize: 16,
     fontFamily: "'Space Mono', monospace",
     background: isFocused ? "#222" : "#1A1A1A",
     color: "#FAFAFA",

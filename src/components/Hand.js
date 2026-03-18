@@ -22,7 +22,7 @@ export default function Hand({
       {/* The emoji hand */}
       <div style={{
         position: "relative",
-        fontSize: revealedSide ? 140 : 180,
+        fontSize: revealedSide ? 110 : 140,
         lineHeight: 1,
         textAlign: "center",
         filter: revealedSide
@@ -131,14 +131,14 @@ export default function Hand({
           <div style={{
             background: revealedSide === "left" ? "#FF5733" : "#1A1A1A",
             color: "#FAFAFA",
-            padding: "8px 16px", borderRadius: 20,
-            fontSize: 15, fontWeight: 700,
+            padding: "8px 14px", borderRadius: 20,
+            fontSize: 14, fontWeight: 700,
             fontFamily: "'Space Mono', monospace",
             border: revealedSide === "left" ? "2px solid #FFD700" : "1px solid #888",
-            whiteSpace: "nowrap",
-            overflow: "hidden",
-            textOverflow: "ellipsis",
-            maxWidth: "40%",
+            wordBreak: "break-word",
+            textAlign: "center",
+            flex: 1,
+            minWidth: 0,
             boxShadow: revealedSide === "left" ? "0 0 20px rgba(255,87,51,0.5)" : "none",
             animation: "popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)",
           }}>
@@ -154,14 +154,14 @@ export default function Hand({
           <div style={{
             background: revealedSide === "right" ? "#FF5733" : "#1A1A1A",
             color: "#FAFAFA",
-            padding: "8px 16px", borderRadius: 20,
-            fontSize: 15, fontWeight: 700,
+            padding: "8px 14px", borderRadius: 20,
+            fontSize: 14, fontWeight: 700,
             fontFamily: "'Space Mono', monospace",
             border: revealedSide === "right" ? "2px solid #FFD700" : "1px solid #888",
-            whiteSpace: "nowrap",
-            overflow: "hidden",
-            textOverflow: "ellipsis",
-            maxWidth: "40%",
+            wordBreak: "break-word",
+            textAlign: "center",
+            flex: 1,
+            minWidth: 0,
             boxShadow: revealedSide === "right" ? "0 0 20px rgba(255,87,51,0.5)" : "none",
             animation: "popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.1s both",
           }}>

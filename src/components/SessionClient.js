@@ -163,108 +163,23 @@ function RevealScreen({ session }) {
   const chosen = session.picked === "left" ? session.opt1 : session.opt2;
   const shareText = `🖕 The finger has spoken: "${chosen}"!\n\n"${session.opt1}" vs "${session.opt2}" — settled in one tap.`;
   const shareUrl = BASE_URL;
-  const encodedText = encodeURIComponent(shareText);
-  const encodedUrl = encodeURIComponent(shareUrl);
 
   useEffect(() => {
     const t = setTimeout(() => setShowConfetti(false), 4000);
     return () => clearTimeout(t);
   }, []);
 
-  const handleCopy = async () => {
+  const handleShare = async () => {
     const text = `${shareText}\n\nTry it → ${shareUrl}`;
     if (navigator.share) {
       try {
-        await navigator.share({ title: "Pick One", text });
+        await navigator.share({ title: "Pick One", text, url: shareUrl });
         return;
       } catch { /* cancelled */ }
     }
     await navigator.clipboard.writeText(text);
     setToast(true);
     setTimeout(() => setToast(false), 2000);
-  };
-
-  const socialBtnStyle = {
-    flex: "1 1 0", minWidth: 0, padding: "12px 6px", fontSize: 12,
-    fontFamily: "'Space Mono', monospace", fontWeight: 700,
-    border: "none", borderRadius: 12, cursor: "pointer",
-    textDecoration: "none", textAlign: "center",
-    display: "flex", alignItems: "center", justifyContent: "center",
-    gap: 4, overflow: "hidden", whiteSpace: "nowrap",
-  };
-
-  const generateShareCard = () => {
-    const canvas = document.createElement("canvas");
-    canvas.width = 1080;
-    canvas.height = 1920;
-    const ctx = canvas.getContext("2d");
-
-    // Background
-    ctx.fillStyle = "#0D0D0D";
-    ctx.fillRect(0, 0, 1080, 1920);
-
-    // Gradient accent bar at top
-    const grad = ctx.createLinearGradient(0, 0, 1080, 0);
-    grad.addColorStop(0, "#FF5733");
-    grad.addColorStop(1, "#FFD700");
-    ctx.fillStyle = grad;
-    ctx.fillRect(0, 0, 1080, 8);
-
-    // Hand emoji
-    ctx.font = "200px serif";
-    ctx.textAlign = "center";
-    ctx.fillText(session.picked === "left" ? "\u{1F595}" : "\u261D\uFE0F", 540, 650);
-
-    // "The finger has spoken"
-    ctx.fillStyle = "#888888";
-    ctx.font = "bold 36px 'Space Mono', monospace";
-    ctx.fillText("the finger has spoken", 540, 780);
-
-    // Result
-    ctx.fillStyle = "#FAFAFA";
-    ctx.font = "bold 72px 'Space Mono', monospace";
-    const chosenText = chosen.length > 18 ? chosen.slice(0, 18) + "..." : chosen;
-    ctx.fillText(chosenText, 540, 900);
-
-    // Options
-    ctx.fillStyle = "#555555";
-    ctx.font = "bold 32px 'Space Mono', monospace";
-    ctx.fillText(`"${session.opt1}" vs "${session.opt2}"`, 540, 1000);
-
-    // Branding
-    ctx.fillStyle = "#FF5733";
-    ctx.font = "bold 40px 'Space Mono', monospace";
-    ctx.fillText("pickoneapp.fun", 540, 1200);
-
-    ctx.fillStyle = "#555555";
-    ctx.font = "28px 'Space Mono', monospace";
-    ctx.fillText("set two options. let fate decide. ✌️", 540, 1260);
-
-    return canvas;
-  };
-
-  const handleShareStory = async () => {
-    try {
-      const canvas = generateShareCard();
-      const blob = await new Promise(r => canvas.toBlob(r, "image/png"));
-      const file = new File([blob], "pickone-result.png", { type: "image/png" });
-
-      if (navigator.canShare?.({ files: [file] })) {
-        await navigator.share({
-          files: [file],
-          title: "Pick One",
-          text: shareText,
-        });
-      } else {
-        // Fallback: download the image
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = "pickone-result.png";
-        a.click();
-        URL.revokeObjectURL(url);
-      }
-    } catch { /* cancelled */ }
   };
 
   return (
@@ -313,85 +228,28 @@ function RevealScreen({ session }) {
         </div>
         <div style={{
           fontFamily: "'Dela Gothic One', cursive",
-          fontSize: 28, color: "#FAFAFA",
+          fontSize: chosen.length > 20 ? 20 : 28,
+          color: "#FAFAFA",
+          wordBreak: "break-word",
         }}>
           {chosen}
         </div>
       </div>
 
-      {/* Social share buttons */}
-      <div style={{
-        marginTop: 24, marginBottom: 8,
-        color: "#555", fontFamily: "'Space Mono', monospace",
-        fontSize: 11, textTransform: "uppercase", letterSpacing: 2,
-      }}>
-        Share the verdict
-      </div>
-      {/* Row 1: Main platforms */}
-      <div style={{ display: "flex", gap: 6, marginBottom: 6 }}>
-        <a
-          href={`https://wa.me/?text=${encodedText}%0A%0ATry%20it%20→%20${encodedUrl}`}
-          target="_blank"
-          rel="noopener noreferrer"
-          style={{ ...socialBtnStyle, background: "#25D366", color: "#fff" }}
-        >
-          WhatsApp
-        </a>
-        <a
-          href={`https://twitter.com/intent/tweet?text=${encodedText}&url=${encodedUrl}`}
-          target="_blank"
-          rel="noopener noreferrer"
-          style={{ ...socialBtnStyle, background: "#000", color: "#FAFAFA", border: "2px solid #333" }}
-        >
-          𝕏 Post
-        </a>
-        <a
-          href={`https://t.me/share/url?url=${encodedUrl}&text=${encodedText}`}
-          target="_blank"
-          rel="noopener noreferrer"
-          style={{ ...socialBtnStyle, background: "#0088cc", color: "#fff" }}
-        >
-          Telegram
-        </a>
-      </div>
-      {/* Row 2: More platforms + copy */}
-      <div style={{ display: "flex", gap: 6, marginBottom: 6 }}>
-        <a
-          href={`https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}&quote=${encodedText}`}
-          target="_blank"
-          rel="noopener noreferrer"
-          style={{ ...socialBtnStyle, background: "#1877F2", color: "#fff" }}
-        >
-          Facebook
-        </a>
-        <a
-          href={`https://www.reddit.com/submit?url=${encodedUrl}&title=${encodeURIComponent(`The finger has spoken: "${chosen}"!`)}`}
-          target="_blank"
-          rel="noopener noreferrer"
-          style={{ ...socialBtnStyle, background: "#FF4500", color: "#fff" }}
-        >
-          Reddit
-        </a>
-        <button
-          onClick={handleCopy}
-          style={{ ...socialBtnStyle, background: "linear-gradient(135deg, #40C4FF, #FF4081)", color: "#000" }}
-        >
-          Copy
-        </button>
-      </div>
-      {/* Row 3: Instagram Stories */}
+      {/* Share button */}
       <button
-        onClick={handleShareStory}
+        onClick={handleShare}
         style={{
-          width: "100%", padding: 14, fontSize: 14,
-          fontFamily: "'Space Mono', monospace", fontWeight: 700,
-          background: "linear-gradient(135deg, #833AB4, #FD1D1D, #F77737)",
-          color: "#fff", border: "none", borderRadius: 12,
-          cursor: "pointer", marginBottom: 12,
-          display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
+          width: "100%", padding: 16, fontSize: 16,
+          fontFamily: "'Dela Gothic One', cursive",
+          fontWeight: 700, marginTop: 24, marginBottom: 12,
+          background: "linear-gradient(135deg, #40C4FF, #FF4081)",
+          color: "#000", border: "none", borderRadius: 16,
+          cursor: "pointer", letterSpacing: 1,
+          textTransform: "uppercase",
         }}
       >
-        📸 Share to Stories
+        📤 Share the verdict
       </button>
 
       {/* CTA: Make your own */}
