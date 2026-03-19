@@ -164,10 +164,13 @@ export default function HomePage() {
   const [opt2, setOpt2] = useState("");
   const [loading, setLoading] = useState(false);
   const [focused, setFocused] = useState(null);
-  const [placeholders] = useState(() => getRandomPair());
+  const [placeholders, setPlaceholders] = useState(["Option A", "Option B"]);
   const [mounted, setMounted] = useState(false);
 
-  useEffect(() => setMounted(true), []);
+  useEffect(() => {
+    setPlaceholders(getRandomPair());
+    setMounted(true);
+  }, []);
 
   const canSubmit = opt1.trim() && opt2.trim() && !loading;
 
