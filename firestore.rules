@@ -4,17 +4,28 @@ service cloud.firestore {
     match /sessions/{sessionId} {
       // Anyone can read (to open a shared link)
       allow read: if true;
-      
+
       // Anyone can create (to start a new game)
       allow create: if true;
-      
+
       // Can only update if 'picked' is currently null (one-time pick)
       // and only the 'picked' field is being changed
       allow update: if resource.data.picked == null
                     && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['picked']);
-      
+
       // No deletes allowed from client
       allow delete: if false;
+    }
+
+    match /feedback/{feedbackId} {
+      // Anyone can submit feedback
+      allow create: if request.resource.data.keys().hasAll(['message', 'createdAt'])
+                    && request.resource.data.message is string
+                    && request.resource.data.message.size() > 0
+                    && request.resource.data.message.size() <= 500;
+
+      // Feedback is private — no client reads, updates, or deletes
+      allow read, update, delete: if false;
     }
   }
 }

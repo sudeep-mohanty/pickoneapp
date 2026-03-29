@@ -1,6 +1,8 @@
 import { initializeApp, getApps } from "firebase/app";
 import {
   getFirestore,
+  collection,
+  addDoc,
   doc,
   setDoc,
   getDoc,
@@ -53,6 +55,15 @@ export async function getSession(id) {
 export async function pickFinger(id, side) {
   const sessionRef = doc(db, "sessions", id);
   await updateDoc(sessionRef, { picked: side });
+}
+
+// Submit feedback from the privacy/contact form
+export async function submitFeedback(message, email) {
+  await addDoc(collection(db, "feedback"), {
+    message,
+    email: email || null,
+    createdAt: serverTimestamp(),
+  });
 }
 
 // Listen for real-time updates (creator watches for the pick)

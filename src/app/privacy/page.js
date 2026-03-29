@@ -8,6 +8,8 @@ export const metadata = {
   },
 };
 
+import FeedbackForm from "@/components/FeedbackForm";
+
 export default function PrivacyPage() {
   const s = {
     page: {
@@ -61,9 +63,10 @@ export default function PrivacyPage() {
         </p>
 
         <h2 style={s.h2}>Contact</h2>
-        <p style={s.p}>
-          Questions? Reach out at privacy@pickoneapp.fun
+        <p style={{ ...s.p, marginBottom: 16 }}>
+          Questions or feedback? Send us a message below.
         </p>
+        <FeedbackForm />
 
         <div style={{ marginTop: 40 }}>
           <a href="/" style={s.link}>← Back to Pick One</a>
