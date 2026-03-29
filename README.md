@@ -12,7 +12,7 @@ A two-finger decision maker. Set two options, share a link, let someone pick a f
 ## Run Locally
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/pickoneapp.git
+git clone https://github.com/sudeep-mohanty/pickoneapp.git
 cd pickoneapp
 npm install
 cp .env.local.example .env.local   # fill in your Firebase config

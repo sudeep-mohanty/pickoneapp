@@ -2,6 +2,26 @@
   "name": "pickoneapp",
   "version": "1.0.0",
   "private": true,
+  "description": "A two-finger decision maker. Set two options, share a link, let someone pick a finger to decide.",
+  "homepage": "https://pickoneapp.fun",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sudeep-mohanty/pickoneapp.git"
+  },
+  "bugs": {
+    "url": "https://github.com/sudeep-mohanty/pickoneapp/issues"
+  },
+  "author": "Sudeep Mohanty",
+  "license": "MIT",
+  "keywords": [
+    "decision-maker",
+    "pick-one",
+    "two-options",
+    "nextjs",
+    "firebase",
+    "game",
+    "fun"
+  ],
   "scripts": {
     "dev": "next dev",
     "build": "next build",
