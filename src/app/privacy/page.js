@@ -1,5 +1,11 @@
 export const metadata = {
   title: "Privacy Policy — Pick One",
+  description: "Privacy policy for Pick One — the two-finger decision maker. Learn how we handle your data.",
+  openGraph: {
+    title: "Privacy Policy — Pick One",
+    description: "Privacy policy for Pick One — the two-finger decision maker.",
+    url: "/privacy",
+  },
 };
 
 export default function PrivacyPage() {
@@ -10,15 +16,15 @@ export default function PrivacyPage() {
     },
     container: {
       maxWidth: 600, width: "100%",
-      fontFamily: "'Space Mono', monospace", color: "#FAFAFA",
+      fontFamily: "'Inter', -apple-system, sans-serif", color: "var(--text)",
     },
     h1: {
       fontFamily: "'Dela Gothic One', cursive",
-      fontSize: 28, marginBottom: 24,
+      fontSize: 28, marginBottom: 24, color: "var(--text)",
     },
-    h2: { fontSize: 16, color: "#FF5733", marginTop: 24, marginBottom: 8 },
-    p: { fontSize: 13, color: "#aaa", lineHeight: 1.8, marginBottom: 12 },
-    link: { color: "#FF5733", textDecoration: "none" },
+    h2: { fontSize: 16, color: "var(--accent)", marginTop: 24, marginBottom: 8 },
+    p: { fontSize: 14, color: "var(--text-secondary)", lineHeight: 1.8, marginBottom: 12 },
+    link: { color: "var(--accent)", textDecoration: "none" },
   };
 
   return (
