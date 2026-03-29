@@ -1,6 +1,5 @@
 "use client";
 import { useState } from "react";
-import { submitFeedback } from "@/lib/firebase";
 
 export default function FeedbackForm() {
   const [message, setMessage] = useState("");
@@ -13,7 +12,12 @@ export default function FeedbackForm() {
 
     setStatus("sending");
     try {
-      await submitFeedback(message.trim(), email.trim());
+      const res = await fetch("/api/feedback", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: message.trim(), email: email.trim() || null }),
+      });
+      if (!res.ok) throw new Error("Send failed");
       setStatus("sent");
       setMessage("");
       setEmail("");

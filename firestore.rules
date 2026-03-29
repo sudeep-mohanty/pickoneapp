@@ -16,16 +16,5 @@ service cloud.firestore {
       // No deletes allowed from client
       allow delete: if false;
     }
-
-    match /feedback/{feedbackId} {
-      // Anyone can submit feedback
-      allow create: if request.resource.data.keys().hasAll(['message', 'createdAt'])
-                    && request.resource.data.message is string
-                    && request.resource.data.message.size() > 0
-                    && request.resource.data.message.size() <= 500;
-
-      // Feedback is private — no client reads, updates, or deletes
-      allow read, update, delete: if false;
-    }
   }
 }
