@@ -26,6 +26,9 @@ export const metadata = {
     description: "Set two options. Share the link. Let fate decide.",
     images: ["/og-default.png"],
   },
+  alternates: {
+    canonical: "/",
+  },
   icons: {
     icon: "/favicon.svg",
     apple: "/icon-192.svg",
